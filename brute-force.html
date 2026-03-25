@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberSim | Brute Force Simulation</title>
+    <link rel="stylesheet" href="public/css/style.css">
+    <style>
+        .simulation-container { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 40px; margin-top: 30px; }
+        .brute-force-demo { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 30px; }
+        .login-simulation { padding: 30px; background: #fff; color: #333; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .login-simulation h2 { margin-bottom: 20px; color: var(--bg-color); text-align: center; }
+        .login-simulation input { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px; }
+        .login-simulation button { width: 100%; padding: 10px; background: #2a2a2a; color: #fff; border: none; border-radius: 4px; cursor: not-allowed; font-weight: bold; }
+        .attack-console { background: #111; border: 1px solid #333; border-radius: 8px; padding: 20px; font-family: 'Space Mono', monospace; color: var(--neon-green); height: 400px; display: flex; flex-direction: column; }
+        .console-header { display: flex; justify-content: space-between; border-bottom: 1px solid #222; padding-bottom: 5px; margin-bottom: 10px; font-size: 0.8rem; color: var(--text-secondary); }
+        .console-logs { overflow-y: auto; flex-grow: 1; }
+        .log-entry { margin-bottom: 4px; font-size: 0.9rem; }
+        .start-btn { background: var(--neon-red); color: #fff; border: none; padding: 15px 40px; border-radius: 30px; font-size: 1.1rem; cursor: pointer; font-weight: bold; box-shadow: 0 0 10px rgba(255, 62, 62, 0.4); transition: 0.3s; }
+        .start-btn:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(255, 62, 62, 0.6); }
+        .stats { display: flex; justify-content: space-around; margin-top: 20px; font-size: 1.2rem; background: #1e252e; padding: 15px; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <a href="index.html" style="text-decoration: none; color: inherit;">CyberSim</a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Dashboard</a></li>
+            <li><a href="login.html">Logout</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <h1>Brute Force Attack</h1>
+            <p>See how automated tools can crack weak passwords in seconds.</p>
+        </section>
+
+        <div class="simulation-container">
+            <h2>The Scenario</h2>
+            <p>Watch as an automated script tries each one until it finds a match.</p>
+
+            <div class="stats">
+                <div class="stat-item">Target: <span>admin</span></div>
+                <div class="stat-item">Tested: <span id="attemptCount">0</span> / <span id="totalCount">0</span></div>
+                <div class="stat-item">Status: <span id="statusIndicator" style="color: var(--neon-red);">READY</span></div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar" style="height: 12px; background: var(--accent-blue); width: 0%; transition: width 0.3s;"></div>
+            </div>
+
+            <div class="brute-force-demo">
+                <div class="login-simulation">
+                    <h2>Admin Login</h2>
+                    <input type="text" value="admin" readonly>
+                    <input type="password" id="targetPassword" placeholder="••••••••">
+                    <button>Sign In</button>
+                </div>
+                <div class="attack-console">
+                    <div class="console-header"><span>Terminal: /bin/crack_tool</span><span>[ROOT ACCESS]</span></div>
+                    <div class="console-logs" id="consoleLogs"><div class="log-entry">Waiting for attack initialization...</div></div>
+                </div>
+            </div>
+
+            <div class="control-panel" style="text-align: center; margin-top: 20px;">
+                <button class="start-btn" id="startAttack">LAUNCH BRUTE FORCE ATTACK</button>
+            </div>
+
+            <div id="feedbackBox" class="explanation fade-in" style="margin-top: 50px; border-left-color: var(--neon-red); display: none;">
+                <h3>Educational Breakdown</h3>
+                <p>The account was compromised because it used a common password and had no account lockout mechanism.</p>
+            </div>
+        </div>
+    </main>
+
+    <script src="public/js/main.js"></script>
+    <script>
+        const passwords = ["123456", "qwerty", "admin123", "password", "superman", "password123"];
+        const startBtn = document.getElementById('startAttack');
+        const attemptCount = document.getElementById('attemptCount');
+        const totalCount = document.getElementById('totalCount');
+        const progressBar = document.getElementById('progressBar');
+        const statusIndicator = document.getElementById('statusIndicator');
+        const consoleLogs = document.getElementById('consoleLogs');
+        const targetPasswordInput = document.getElementById('targetPassword');
+        const feedbackBox = document.getElementById('feedbackBox');
+
+        totalCount.innerText = passwords.length;
+
+        startBtn.addEventListener('click', async () => {
+            startBtn.disabled = true;
+            statusIndicator.innerText = "ATTACKING...";
+            statusIndicator.style.color = "orange";
+            consoleLogs.innerHTML = "";
+            let currentAttempt = 0;
+
+            for (const pwd of passwords) {
+                currentAttempt++;
+                attemptCount.innerText = currentAttempt;
+                progressBar.style.width = (currentAttempt / passwords.length * 100) + '%';
+                targetPasswordInput.value = pwd;
+
+                const logEntry = document.createElement('div');
+                logEntry.className = 'log-entry';
+                logEntry.innerHTML = `<span style="color: grey;">[TRY]</span> Testing: <strong>${pwd}</strong>`;
+                consoleLogs.appendChild(logEntry);
+                consoleLogs.scrollTop = consoleLogs.scrollHeight;
+
+                await new Promise(resolve => setTimeout(resolve, 300));
+
+                if (pwd === 'password123') {
+                    logEntry.innerHTML = `<span style="color: var(--neon-green);">[MATCH]</span> Password found: <strong>${pwd}</strong>. Accessing account...`;
+                    statusIndicator.innerText = "ACCESS GRANTED";
+                    statusIndicator.style.color = "var(--neon-green)";
+                    progressBar.style.background = 'var(--neon-green)';
+                    feedbackBox.style.display = "block";
+                    break;
+                } else {
+                    logEntry.innerHTML += ` <span style="color: var(--neon-red);">[DENIED]</span>`;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

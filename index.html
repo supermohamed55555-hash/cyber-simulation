@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberSim | Simulation Dashboard</title>
+    <link rel="stylesheet" href="public/css/style.css">
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            CyberSim
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html" class="active">Dashboard</a></li>
+            <li><a href="login.html">Logout</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <h1>Select an Attack Simulation</h1>
+            <p>Master Cyber-Awareness through Safe, Educational Environments.</p>
+        </section>
+
+        <div class="attack-grid">
+            <!-- Phishing Card -->
+            <div class="attack-card">
+                <div class="attack-icon">PHISH</div>
+                <h3>Phishing Attack</h3>
+                <p>Learn how attackers craft deceptive emails and login pages to steal sensitive user credentials.</p>
+                <a href="phishing.html" class="btn">Start Simulation</a>
+            </div>
+
+            <!-- SQL Injection Card -->
+            <div class="attack-card">
+                <div class="attack-icon">DB</div>
+                <h3>SQL Injection</h3>
+                <p>Discover how unvalidated input can bypass authentication and expose hidden database records.</p>
+                <a href="sql-injection.html" class="btn">Start Simulation</a>
+            </div>
+
+            <!-- Brute Force Card -->
+            <div class="attack-card">
+                <div class="attack-icon">CRACK</div>
+                <h3>Brute Force</h3>
+                <p>Observe how manual and automated password guessing works and why strong passwords are vital.</p>
+                <a href="brute-force.html" class="btn">Start Simulation</a>
+            </div>
+        </div>
+
+        <section class="explanation">
+            <h2>Why Use This Platform?</h2>
+            <p>In today's digital landscape, understanding the mechanics of cyber attacks is the first step toward defense. This platform provides a <b>completely safe</b> environment where you can observe real-world attack vectors without any risk to actual systems.</p>
+            <br>
+            <p><span class="mono" style="color:#00d4ff">> STATUS: READY_TO_LEARN</span></p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 | Simulation Platform developed by <span class="footer-name">Cyber Education Team</span></p>
+        <p style="font-size:0.75rem; margin-top:10px; color:#555;">FOR EDUCATIONAL PURPOSES ONLY. NO ACTUAL HACKING PERFORMED.</p>
+    </footer>
+
+    <script src="public/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberSim | Identity Verification</title>
+    <link rel="stylesheet" href="public/css/style.css">
+    <style>
+        body { display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; background: radial-gradient(circle at center, #1b263b 0%, #0d1117 100%); }
+        .login-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 50px; width: 100%; max-width: 450px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.4); animation: fadeIn 0.8s ease-out; }
+        .login-card .logo { font-size: 2.5rem; margin-bottom: 10px; justify-content: center; }
+        .login-card p { color: var(--text-secondary); margin-bottom: 35px; }
+        .login-form input { width: 100%; padding: 15px; margin-bottom: 20px; background: var(--bg-color); border: 1px solid var(--border-color); color: #fff; border-radius: 8px; font-size: 1rem; transition: 0.3s; }
+        .login-form button { width: 100%; padding: 15px; background: var(--accent-blue); color: #000; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; margin-top: 10px; }
+        .login-form button:hover { transform: scale(1.02); box-shadow: 0 0 20px var(--accent-blue-glow); }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <div class="logo">CyberSim</div>
+        <p>Simulation Access Control</p>
+        <form class="login-form" action="index.html" method="GET">
+            <input type="text" placeholder="Username / Student ID" required>
+            <input type="password" placeholder="Access Code" required>
+            <button type="submit">Initialize Platform</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberSim | Phishing Simulation</title>
+    <link rel="stylesheet" href="public/css/style.css">
+    <style>
+        .simulation-container { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 40px; margin-top: 30px; }
+        .phishing-demo { background: #fff; color: #000; padding: 40px; border-radius: 8px; max-width: 400px; margin: 30px auto; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        .phishing-demo h2 { text-align: center; color: #1877f2; margin-bottom: 20px; font-family: Arial, sans-serif; }
+        .phishing-demo input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #dddfe2; border-radius: 6px; font-size: 1rem; }
+        .phishing-demo .login-btn { width: 100%; padding: 12px; background: #1877f2; color: #fff; border: none; border-radius: 6px; font-size: 1.2rem; font-weight: bold; cursor: pointer; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; background: rgba(57, 255, 20, 0.1); border: 1px solid var(--neon-green); }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <a href="index.html" style="text-decoration: none; color: inherit;">CyberSim</a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Dashboard</a></li>
+            <li><a href="login.html">Logout</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <h1>Phishing Simulation</h1>
+            <p>Experience how attackers steal credentials and learn how to spot them.</p>
+        </section>
+
+        <div class="simulation-container">
+            <h2>The Scenario</h2>
+            <p>You received an urgent email stating your "SocialConnect" account will be deactivated unless you log in immediately. The link looks slightly off: <code>http://social-connet.xyz/login</code></p>
+            
+            <div class="phishing-demo" id="phishingFormContainer">
+                <h2>SocialConnect</h2>
+                <form id="phishingForm">
+                    <input type="text" name="email" placeholder="Email or Phone Number" required>
+                    <input type="password" name="password" placeholder="Password" required>
+                    <button type="submit" class="login-btn">Log In</button>
+                </form>
+            </div>
+
+            <div id="loadingBox" style="display: none; text-align: center; margin: 30px 0;">
+                <div class="loader"></div>
+                <p>Capturing data... please wait.</p>
+            </div>
+
+            <div id="resultBox" class="result-box fade-in">
+                <div class="warning-box">
+                    <div class="warning-header">
+                        <span>SECURITY BREACH DETECTED</span>
+                    </div>
+                    <p>Your sensitive data has been intercepted by a simulated malicious actor.</p>
+                    <div style="margin-top: 15px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 6px;">
+                        <p><strong>Captured Email:</strong> <span id="capturedEmail" style="color: var(--neon-red);"></span></p>
+                        <p><strong>Captured Password:</strong> <span id="capturedPassword" style="color: var(--neon-red);"></span></p>
+                    </div>
+                </div>
+
+                <div class="explanation" style="margin-top: 30px; border-left-color: var(--neon-red);">
+                    <h3>Educational Breakdown</h3>
+                    <div style="margin-top: 20px;">
+                        <h4>🔍 What Happened?</h4>
+                        <p>You entered your credentials into a fake login form designed to look identical to a legitimate service. The form sent your information to an attacker-controlled collection point.</p>
+                    </div>
+                    <div style="margin-top: 20px;">
+                        <h4>❓ Why it Worked?</h4>
+                        <ul style="margin-left: 20px; color: var(--text-secondary);">
+                            <li><strong>Visual Mimicry:</strong> The form used the same fonts, colors, and logos.</li>
+                            <li><strong>Sense of Urgency:</strong> The prompt forced you to act without thinking.</li>
+                        </ul>
+                    </div>
+                    <div style="margin-top: 20px;">
+                        <h4>🛡️ How to Prevent it?</h4>
+                        <ul style="margin-left: 20px; color: var(--text-secondary);">
+                            <li><strong>Check the URL:</strong> Always verify the domain character by character.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="public/js/main.js"></script>
+    <script>
+        document.getElementById('phishingForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = e.target.email.value;
+            const password = e.target.password.value;
+
+            document.getElementById('phishingFormContainer').style.display = 'none';
+            document.getElementById('loadingBox').style.display = 'block';
+
+            await new Promise(resolve => setTimeout(resolve, 1500));
+
+            document.getElementById('loadingBox').style.display = 'none';
+            document.getElementById('resultBox').style.display = 'block';
+            document.getElementById('capturedEmail').innerText = email;
+            document.getElementById('capturedPassword').innerText = '*'.repeat(password.length) + ' (' + password + ')';
+        });
+    </script>
+</body>
+</html>

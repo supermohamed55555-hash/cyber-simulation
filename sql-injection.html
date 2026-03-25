@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberSim | SQL Injection Simulation</title>
+    <link rel="stylesheet" href="public/css/style.css">
+    <style>
+        .simulation-container { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 40px; margin-top: 30px; }
+        .search-demo { padding: 30px; background: #1e252e; border: 1px dashed var(--accent-blue); border-radius: 8px; margin-bottom: 30px; }
+        .search-demo input { width: 70%; padding: 12px; background: var(--bg-color); border: 1px solid var(--border-color); color: #fff; border-radius: 6px; font-size: 1rem; outline: none; }
+        .search-demo button { padding: 12px 25px; background: var(--accent-blue); color: #000; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; margin-left: 10px; }
+        .data-table { width: 100%; border-collapse: collapse; margin-top: 30px; }
+        .data-table th, .data-table td { text-align: left; padding: 12px; border-bottom: 1px solid var(--border-color); }
+        .terminal-output { background: #000; color: var(--neon-green); padding: 20px; border-radius: 6px; font-family: 'Space Mono', monospace; margin-top: 20px; border: 1px solid #333; max-height: 200px; overflow-y: auto; }
+        .hint { color: var(--accent-blue); cursor: help; text-decoration: underline; font-size: 0.9rem; margin-top: 10px; display: inline-block; }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <a href="index.html" style="text-decoration: none; color: inherit;">CyberSim</a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Dashboard</a></li>
+            <li><a href="login.html">Logout</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <h1>SQL Injection Lab</h1>
+            <p>Understand how unsanitized database queries can expose hidden data.</p>
+        </section>
+
+        <div class="simulation-container">
+            <h2>Search User Database</h2>
+            <div class="search-demo">
+                <label for="searchQuery">SELECT * FROM users WHERE name = '<span id="queryDisplay" style="color: var(--neon-green);"></span>'</label>
+                <form id="sqliForm">
+                    <input type="text" id="searchQuery" placeholder="Search for user (e.g., admin)" autocomplete="off">
+                    <button type="submit">Search</button>
+                </form>
+                <span class="hint" id="hintAction">Try this: ' OR '1'='1</span>
+            </div>
+
+            <div class="terminal-output" id="terminal">
+                <p>> System ready. Waiting for input...</p>
+            </div>
+
+            <div id="resultsArea" style="display:none;" class="fade-in">
+                <h3>Results Detected:</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr><th>ID</th><th>Username</th><th>Simulated Balance</th></tr>
+                    </thead>
+                    <tbody id="resultsTableBody"></tbody>
+                </table>
+
+                <div class="explanation" style="margin-top: 50px;">
+                    <h3>Educational Breakdown</h3>
+                    <p>The input <code>' OR '1'='1</code> was appended directly to the SQL query, changing the logic to always be true.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="public/js/main.js"></script>
+    <script>
+        const input = document.getElementById('searchQuery');
+        const terminal = document.getElementById('terminal');
+        const queryDisplay = document.getElementById('queryDisplay');
+        const hintAction = document.getElementById('hintAction');
+
+        hintAction.addEventListener('click', () => {
+            input.value = "' OR '1'='1";
+            queryDisplay.innerText = input.value;
+        });
+
+        input.addEventListener('input', (e) => queryDisplay.innerText = e.target.value);
+
+        document.getElementById('sqliForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const val = input.value;
+            if (!val) return;
+
+            document.getElementById('resultsArea').style.display = 'none';
+            terminal.innerHTML += `<p style="color: grey;">> Preparing Search for: "${val}"</p>`;
+            terminal.innerHTML += `<p style="color: var(--accent-blue);">> [EXECUTING] SELECT * FROM users WHERE name = '${val}'</p>`;
+            terminal.scrollTop = terminal.scrollHeight;
+
+            await new Promise(resolve => setTimeout(resolve, 1200));
+
+            if (val.includes("' OR '1'='1") || val.includes("'--")) {
+                terminal.innerHTML += `<p style="color: var(--neon-green);">> [OK] 3 Records Pulled (Bypass Detected)</p>`;
+                document.getElementById('resultsArea').style.display = 'block';
+                document.getElementById('resultsTableBody').innerHTML = `
+                    <tr><td>1</td><td>admin</td><td>$1,000,000</td></tr>
+                    <tr><td>2</td><td>ceo_mike</td><td>$5,000,000</td></tr>
+                    <tr><td>3</td><td>manager_sarah</td><td>$25,000</td></tr>
+                `;
+            } else {
+                terminal.innerHTML += `<p style="color: grey;">> [OK] 0 Records Matching.</p>`;
+            }
+            terminal.scrollTop = terminal.scrollHeight;
+        });
+    </script>
+</body>
+</html>
